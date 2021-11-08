@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        #form {
+            width: 20%;
+        }
+        h1 {
+            margin-top: 10%;
+            margin-left: 42%;
+        }
+        
+        input {
+            margin-top: 4px;
+            margin-left: 40%;
+        }
+        .btn:hover{
+            background-color: cyan;
+        }
+        p{
+            margin-top: 4px;
+            margin-left: 40%;
+        }
+        #btn{
+            margin-top: 4px;
+            margin-left: 40%;
+        }
+        .id{
+            padding: 10px;
+            margin:50px,auto
+        }
+        a{
+            padding:20px;
+        }
+    </style>
+<body>
+    <div class="id">
+
+        <a href="login.html">login</a>
+        <a href="signup.html">Sign Up</a>
+        <a href="menu.html">Menu</a>
+
+
+    </div>
+
+    
+    <h1>Sign Up</h1>
+    <form id="signform" onsubmit="getDetails(event)" action="">
+        <input type="text" id="name" placeholder="Enter your name" /><br>
+        <input type="email" id="email" placeholder="enter your email" /><br>
+        <input type="text" id="username" placeholder="username"><br>
+        <input type="password" id="password" placeholder="enter password"><br>
+        <input type="text" id="mobile" placeholder="enter your mobile" /><br>
+        <input type="submit">
+        <p>if u r already registered</p>
+        <button id="btn"><a href="login.html">login</a></button>
+    </form>
+
+    </div>
+
+
+</body>
+
+</html>
+<script>
+    function getDetails(e) {
+        e.preventDefault();
+        let Mform = document.getElementById('signform');
+
+        let user_data = {
+            name: Mform.name.value,
+            email: Mform.email.value,
+            mobile: Mform.mobile.value,
+            username: Mform.username.value,
+            password: Mform.password.value,
+           
+
+        };
+        console.log(user_data);
+
+        var userdata = JSON.stringify(user_data);
+        console.log("ud", userdata)
+        if (localStorage.getItem('data') == null) {
+            localStorage.setItem('data', JSON.stringify(userdata))
+        }
+
+        fetch(`https://masai-api-mocker.herokuapp.com/auth/register`, {
+
+                method: 'POST',
+
+                body: userdata,
+
+                headers: {
+                    "Content-Type": "application/json",
+                },
+            })
+            .then((res) => {
+                return res.json();
+            })
+            .then((res) => {
+                console.log('res', res);
+            })
+            .catch((err) => {
+                console.log('err', err)
+            });
+    }
+</script>

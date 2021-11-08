@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    
+    <style>
+        #form {
+            width: 20%;
+        }
+        h1 {
+            margin-top: 10%;
+            margin-left: 42%;
+        }
+        
+        input {
+            margin-top: 4px;
+            margin-left: 40%;
+        }
+        .id{
+            padding: 10px;
+            margin:50px,auto
+        }
+        a{
+            padding:20px;
+        }
+        </style>
+
+</head>
+<body>
+    <div class="id">
+
+        <a href="login.html">login</a>
+        <a href="signup.html">Sign Up</a>
+        <a href="menu.html">Menu</a>
+
+
+    </div>
+
+        <div>
+        <h1>login</h1>
+        <form id="login-form" onsubmit=login(event) action="">
+            <input type="text" id="username" placeholder="username"><br>
+            <input type="password" id="password" placeholder="password"><br>
+            <input type="submit">
+        </form>
+    </div>
+</body>
+</html>
+<script>
+    function login(e){
+    e.preventDefault();
+    let Lform = document.getElementById('login-form');
+
+    let user_data = {
+        username :Lform.username.value,
+        password :Lform.password.value,
+
+    };
+    console.log(user_data);
+    let data_to_send = JSON.stringify(user_data);
+    console.log("data-to-send",data_to_send);
+    fetch("https://masai-api-mocker.herokuapp.com/auth/login",{
+        method:'POST',
+
+        body:data_to_send,
+
+        headers :{
+            "Content-Type" :"application/json",
+        },
+    })
+    .then((res)=>{
+        return res.json();
+    })
+    .then((res)=>{
+        console.log("res",res);
+        fetchMyData(user_data.username,res.token)
+    })
+    .catch((err)=>{
+        console.log("err",err);
+    })
+
+}
+function fetchMyData(username,token){
+    fetch(`https://masai-api-mocker.herokuapp.com/user/${username}`,{
+        headers :{
+            "Content-Type":"application/json",
+
+            Authorization:`Bearer ${token}`,
+        }
+    })
+    .then((res)=>{
+        return res.json();
+    })
+    .then((res)=>{
+        console.log("res",res);
+        //console.log("login successful")
+        window.location.href="menu.html";
+        
+    })
+    .catch((err)=>{
+        console.log('err',err);
+    })
+    
+}
+</script
